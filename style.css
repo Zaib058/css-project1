@@ -1,0 +1,114 @@
+/* ---------- Page ---------- */
+body { margin: 0; font-family: Arial, sans-serif; }
+#toggle { position: fixed; opacity: 0; }   /* hidden, but keyboard users can still use it */
+
+/* ---------- Sky: DAY by default ---------- */
+.sky {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #7ccbff;
+  color: #10173a;
+  transition: background 0.8s, color 0.8s;
+}
+/* When the checkbox is ticked, switch to NIGHT */
+#toggle:checked ~ .sky { background: #10173a; color: #ffffff; }
+
+/* ---------- The switch ---------- */
+.switch {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  margin-left: -60px;
+  width: 120px;
+  height: 60px;
+  box-sizing: border-box;
+  border: 4px solid #10173a;
+  border-radius: 30px;
+  background: #ffffff;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.8s, border-color 0.8s;
+}
+.knob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffd23f;           /* sun colour */
+  transition: transform 0.5s, background 0.5s;
+}
+#toggle:checked ~ .sky .switch { background: #1f2a5a; border-color: #ffffff; }
+#toggle:checked ~ .sky .knob   { transform: translateX(60px); background: #f1f5f9; }
+#toggle:focus-visible ~ .sky .switch { outline: 4px solid #ff6b00; outline-offset: 4px; }
+
+/* ---------- Sun and moon ---------- */
+.sun, .moon {
+  position: absolute;
+  top: 170px;
+  left: 50%;
+  margin-left: -70px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  transition: transform 1s, opacity 0.8s;
+}
+.sun  { background: #ffd23f; box-shadow: 0 0 60px 20px rgba(255, 210, 63, 0.6); }
+.moon { background: #f1f5f9; box-shadow: 0 0 50px 10px rgba(255, 255, 255, 0.35);
+        transform: translate(-240px, 300px); opacity: 0; }       /* hidden below the sky */
+.moon::before, .moon::after { content: ""; position: absolute; border-radius: 50%; background: #cfd8e3; }
+.moon::before { top: 30px; left: 32px; width: 28px; height: 28px; }
+.moon::after  { top: 80px; left: 84px; width: 40px; height: 40px; }
+
+/* Night: the sun slides away and the moon slides in */
+#toggle:checked ~ .sky .sun  { transform: translate(240px, 300px); opacity: 0; }
+#toggle:checked ~ .sky .moon { transform: none; opacity: 1; }
+
+/* ---------- Clouds (day only) ---------- */
+.cloud {
+  position: absolute;
+  width: 140px;
+  height: 44px;
+  border-radius: 44px;
+  background: #ffffff;
+  transition: opacity 0.8s;
+  animation: drift 8s ease-in-out infinite alternate;
+}
+.cloud::before { content: ""; position: absolute; top: -24px; left: 26px;
+                 width: 56px; height: 56px; border-radius: 50%; background: #ffffff; }
+.cloud.one { top: 130px; left: 8%; }
+.cloud.two { top: 360px; right: 8%; animation-delay: -4s; }
+#toggle:checked ~ .sky .cloud { opacity: 0; }
+
+/* ---------- Stars (night only) ---------- */
+.stars { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s; }
+#toggle:checked ~ .sky .stars { opacity: 1; }
+.star { position: absolute; width: 6px; height: 6px; border-radius: 50%;
+        background: #ffffff; animation: twinkle 2s ease-in-out infinite; }
+.star:nth-child(1) { top: 18%; left: 10%; }
+.star:nth-child(2) { top: 30%; left: 85%; animation-delay: 0.4s; }
+.star:nth-child(3) { top: 55%; left: 20%; animation-delay: 0.8s; }
+.star:nth-child(4) { top: 12%; left: 70%; animation-delay: 1.2s; }
+.star:nth-child(5) { top: 62%; left: 80%; animation-delay: 1.6s; }
+.star:nth-child(6) { top: 40%; left: 6%;  animation-delay: 0.6s; }
+.star:nth-child(7) { top: 22%; left: 40%; animation-delay: 1s; }
+.star:nth-child(8) { top: 70%; left: 55%; animation-delay: 1.4s; }
+
+/* ---------- Text ---------- */
+.text { position: absolute; bottom: 50px; left: 0; right: 0; height: 44px;
+        margin: 0; text-align: center; font-size: 34px; font-weight: bold; }
+.text span { position: absolute; left: 0; right: 0; transition: opacity 0.8s; }
+.night-text { opacity: 0; }
+#toggle:checked ~ .sky .day-text   { opacity: 0; }
+#toggle:checked ~ .sky .night-text { opacity: 1; }
+
+/* ---------- Animations ---------- */
+@keyframes drift   { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+@keyframes twinkle { 0%, 100% { transform: scale(0.6); } 50% { transform: scale(1.4); } }
+
+/* ---------- Be kind: no motion for people who get dizzy ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none; transition: none; }
+}

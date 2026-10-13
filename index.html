@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day and Night Toggle 🌙</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 1. A hidden checkbox remembers: unticked = day, ticked = night -->
+  <input type="checkbox" id="toggle">
+
+  <!-- 2. Everything below comes AFTER the checkbox, so CSS can react to it -->
+  <div class="sky">
+
+    <div class="stars">
+      <span class="star"></span><span class="star"></span>
+      <span class="star"></span><span class="star"></span>
+      <span class="star"></span><span class="star"></span>
+      <span class="star"></span><span class="star"></span>
+    </div>
+
+    <div class="cloud one"></div>
+    <div class="cloud two"></div>
+
+    <div class="sun"></div>
+    <div class="moon"></div>
+
+    <!-- 3. Clicking this label ticks the checkbox -->
+    <label class="switch" for="toggle" aria-label="Switch between day and night">
+      <span class="knob"></span>
+    </label>
+
+    <p class="text">
+      <span class="day-text">Good Morning ☀️</span>
+      <span class="night-text">Good Night 🌙</span>
+    </p>
+  </div>
+</body>
+</html>
